@@ -14,7 +14,7 @@ export default function UserCard({ user, onToggleActive }) {
                     </span>
                 </div>
                 <button
-                    onClick={onToggleActive(user.id)}
+                    onClick={() => onToggleActive(user.id)}
                     className={`toggle-btn ${user.active ? 'deactivate' : 'activate'}`}
                 >
                     {user.active ? 'Deactivate' : 'Activate'}
