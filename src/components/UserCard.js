@@ -1,6 +1,5 @@
 // UserCard Component
 // Displays individual user information with toggle functionality
-// 🐛 BUG: There's an issue with the onClick handler in this component
 
 export default function UserCard({ user, onToggleActive }) {
     return (
@@ -8,7 +7,7 @@ export default function UserCard({ user, onToggleActive }) {
             <div className="user-card-content">
                 <div className="user-info">
                     <h3>{user.name}</h3>
-                    <p>{user.email}</p>
+                    <p>john.doe@example.com</p>
                     <span className={`user-status ${user.active ? 'active' : 'inactive'}`}>
                         {user.active ? 'Active' : 'Inactive'}
                     </span>
@@ -17,7 +16,7 @@ export default function UserCard({ user, onToggleActive }) {
                     onClick={() => onToggleActive(user.id)}
                     className={`toggle-btn ${user.active ? 'deactivate' : 'activate'}`}
                 >
-                    {user.active ? 'Deactivate' : 'Activate'}
+                    {user.active ? 'Activate' : 'Deactivate'}
                 </button>
             </div>
         </div>

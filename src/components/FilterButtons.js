@@ -1,6 +1,5 @@
-// FilterButtons Component
+// FilterButtons Component  
 // Provides filtering options for the user list
-// 🐛 BUG: There's an issue with the onClick handler in this component
 
 export default function FilterButtons({ filter, setFilter, users }) {
     const totalCount = users.length;
@@ -22,7 +21,7 @@ export default function FilterButtons({ filter, setFilter, users }) {
                 Active ({activeCount})
             </button>
             <button
-                onClick={setFilter('inactive')}
+                onClick={() => setFilter('inactive')}
                 className={`filter-btn ${filter === 'inactive' ? 'active' : 'inactive'}`}
             >
                 Inactive ({inactiveCount})

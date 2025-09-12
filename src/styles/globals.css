@@ -215,16 +215,23 @@ body {
     color: white;
 }
 
-.toggle-btn:hover {
+.toggle-btn.updating {
+    background-color: #6b7280;
+    color: white;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.toggle-btn:hover:not(.updating) {
     transform: translateY(-1px);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.toggle-btn.deactivate:hover {
+.toggle-btn.deactivate:hover:not(.updating) {
     background-color: #dc2626;
 }
 
-.toggle-btn.activate:hover {
+.toggle-btn.activate:hover:not(.updating) {
     background-color: #059669;
 }
 

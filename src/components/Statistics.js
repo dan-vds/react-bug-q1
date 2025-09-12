@@ -4,7 +4,7 @@
 export default function Statistics({ users }) {
     const totalUsers = users.length;
     const activeUsers = users.filter(user => user.active).length;
-    const inactiveUsers = totalUsers - activeUsers;
+    const inactiveUsers = users.filter(user => !user.active).length + 1;
 
     return (
         <div className="statistics">
