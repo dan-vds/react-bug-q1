@@ -9,13 +9,13 @@ export default function FilterButtons({ filter, setFilter, users }) {
     return (
         <div className="filter-buttons">
             <button
-                onClick={setFilter('all')}
+                onClick={() => setFilter('all')}
                 className={`filter-btn ${filter === 'all' ? 'active' : 'inactive'}`}
             >
                 All Users ({totalCount})
             </button>
             <button
-                onClick={setFilter('active')}
+                onClick={() => setFilter('active')}
                 className={`filter-btn ${filter === 'active' ? 'active' : 'inactive'}`}
             >
                 Active ({activeCount})

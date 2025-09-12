@@ -3,11 +3,12 @@
 This document outlines the bugs that are **visually discoverable** through website testing, without needing to examine the code.
 
 ## Overview
-The application contains **4 clear functional bugs** that candidates should find by using the website normally. These bugs focus on:
+The application contains **5 clear functional bugs** that candidates should find by using the website normally. These bugs focus on:
 - UI elements not working as expected
 - Incorrect data display
 - Confusing button labels
-- Visual/text errors
+- React state management issues
+- Visual/interaction errors
 
 ## Bugs - Discoverable Through Website Testing
 
@@ -62,6 +63,19 @@ The application contains **4 clear functional bugs** that candidates should find
 3. Notice they all show the same email "john.doe@example.com"
 4. Names are correct, but emails are all the same
 
+### 5. **Interaction Counter Never Updates** ⭐ MODERATE  
+**Location**: Small counter display at top showing "User interactions: X"
+**How to find**: Click toggle buttons and watch the counter
+**Expected behavior**: Counter should increment each time you click a toggle button
+**Actual behavior**: Counter stays at 0 forever, never changes
+**Bug severity**: Medium - useState/React state bug
+
+**Testing steps**:
+1. Page loads with "User interactions: 0"
+2. Click any "Activate" or "Deactivate" button → Counter stays "0" (should be 1)
+3. Click another toggle button → Counter still shows "0" (should be 2)
+4. Keep clicking different toggle buttons → Counter never changes from "0"
+
 ## Testing Order Recommendation
 
 For candidates testing the site, they should discover bugs in roughly this order:
@@ -69,7 +83,8 @@ For candidates testing the site, they should discover bugs in roughly this order
 1. **Try basic functionality**: Click filter buttons → discover they don't work
 2. **Look at data**: Notice statistics don't add up mathematically  
 3. **Examine user details**: Notice all users have the same email address
-4. **Use individual features**: Try to understand toggle buttons → realize labels are confusing
+4. **Use toggle buttons**: Try to understand toggle buttons → realize labels are confusing
+5. **Test interactions**: Click multiple toggle buttons → notice counter never changes from 0
 
 ## Key Benefits of These Bugs
 
@@ -83,10 +98,10 @@ For candidates testing the site, they should discover bugs in roughly this order
 
 A candidate testing this application should:
 
-1. **Load the page** → Look at the user list
+1. **Load the page** → Notice interaction counter at "0"
 2. **Try to filter users** → Discover "All Users" and "Active" buttons broken
 3. **Check the math** → Notice statistics don't add up  
 4. **Examine user details** → Notice all users show the same email address
-5. **Test toggle buttons** → Realize button text is backwards
+5. **Test toggle buttons** → Realize button text is backwards + counter never updates from 0
 
 All bugs should be discoverable within **5 minutes of normal website usage** without looking at any code.

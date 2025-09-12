@@ -15,6 +15,7 @@ export default function HomePage() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [interactionCount, setInteractionCount] = useState(0);
 
   // Load users when component mounts
   useEffect(() => {
@@ -44,6 +45,8 @@ export default function HomePage() {
           : user
       )
     );
+    
+    interactionCount++;
   };
 
   // Show loading spinner while data is being fetched
@@ -60,6 +63,11 @@ export default function HomePage() {
   return (
     <div className="container">
       <Header />
+      <div style={{ textAlign: 'center', marginBottom: '1rem', padding: '0.5rem', backgroundColor: '#f9fafb', borderRadius: '0.5rem', border: '1px solid #e5e7eb' }}>
+        <small style={{ color: '#6b7280' }}>
+          User interactions: <strong style={{ color: '#1f2937' }}>{interactionCount}</strong>
+        </small>
+      </div>
       <Statistics users={users} />
       <UserList users={users} onToggleActive={handleToggleActive} />
     </div>
