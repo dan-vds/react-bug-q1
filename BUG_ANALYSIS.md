@@ -1,107 +1,135 @@
-# Bug Report Summary - React User Management App
+# Interview Assessment Bug Analysis
 
-This document outlines the bugs that are **visually discoverable** through website testing, without needing to examine the code.
+**This file will be removed before presenting the codebase to candidates.**
 
-## Overview
-The application contains **5 clear functional bugs** that candidates should find by using the website normally. These bugs focus on:
-- UI elements not working as expected
-- Incorrect data display
-- Confusing button labels
-- React state management issues
-- Visual/interaction errors
+## Bug 1: String Prices Instead of Numbers
 
-## Bugs - Discoverable Through Website Testing
+**Location:** `src/services/api/productService.js`
 
-### 1. **Filter Buttons Don't Work** ⭐ CRITICAL
-**Location**: Top of the page - filter buttons
-**How to find**: Click the "All Users" or "Active" filter buttons
-**Expected behavior**: Should filter the user list
-**Actual behavior**: Buttons don't respond to clicks, list doesn't change
-**Bug severity**: High - core functionality broken
+**What:** Product prices stored as strings instead of numbers
 
-**Testing steps**:
-1. Open the website
-2. Click "All Users" button → Nothing happens
-3. Click "Active" button → Nothing happens  
-4. Click "Inactive" button → This one works correctly!
+**Expected:** Numeric price sorting and comparisons
 
-### 2. **Statistics Don't Add Up** ⭐ CRITICAL
-**Location**: Statistics section at top of page
-**How to find**: Look at the numbers and do basic math
-**Expected behavior**: Active + Inactive should equal Total
-**Actual behavior**: Numbers don't add up correctly
-**Bug severity**: High - data integrity issue
+**Actual:** String comparison fails (e.g., "25.00" < "10.00" returns true)
 
-**Testing steps**:
-1. Look at the statistics: "6 Total, 4 Active, 3 Inactive" 
-2. Calculate: 4 + 3 = 7, but Total shows 6
-3. Count manually by looking at user cards to verify the real numbers
+**Fix:**
 
-### 3. **Toggle Button Labels Are Backwards** ⭐ MODERATE
-**Location**: Each user card has a toggle button
-**How to find**: Look at active users and read their button text
-**Expected behavior**: Button should say what it WILL DO when clicked
-**Actual behavior**: Button text is backwards/confusing
-**Bug severity**: Medium - usability issue
+1. Change `mockProducts` price values from strings to numbers
+2. Update `sortProductsByPrice()` to use `(a, b) => a.price - b.price`
+3. Update `findCheapestProduct()` to use numeric comparison
 
-**Testing steps**:
-1. Find an "Active" user (green badge)
-2. Look at their button - it says "Activate" (should say "Deactivate")
-3. Find an "Inactive" user (red badge)  
-4. Look at their button - it says "Deactivate" (should say "Activate")
+**Solution Code:**
 
-### 4. **All User Cards Show Same Email** ⭐ MODERATE
-**Location**: User cards - email field under each name
-**How to find**: Look at the email addresses across different user cards
-**Expected behavior**: Each user should show their unique email address
-**Actual behavior**: All user cards show "john.doe@example.com"
-**Bug severity**: Medium - data display error
+```javascript
+// Fix price data type
+const mockProducts = [
+  {
+    id: 1,
+    name: "Organic Apples",
+    price: 3.99, // ❌ String "3.99" → ✅ Number 3.99
+    // ... other properties
+  }
+  // ... other products
+];
 
-**Testing steps**:
-1. Look at the first user card - shows "john.doe@example.com"
-2. Look at other user cards (Jane Smith, Bob Johnson, etc.)
-3. Notice they all show the same email "john.doe@example.com"
-4. Names are correct, but emails are all the same
+// Fix sorting function
+sortProductsByPrice(products, order) {
+  return products.sort((a, b) => {
+    if (order === 'asc') return a.price - b.price;    // ❌ String comparison
+    if (order === 'desc') return b.price - a.price;   // ✅ Numeric comparison
+    return 0;
+  });
+}
+```
 
-### 5. **Interaction Counter Never Updates** ⭐ MODERATE  
-**Location**: Small counter display at top showing "User interactions: X"
-**How to find**: Click toggle buttons and watch the counter
-**Expected behavior**: Counter should increment each time you click a toggle button
-**Actual behavior**: Counter stays at 0 forever, never changes
-**Bug severity**: Medium - useState/React state bug
+## Bug 2: Infinite Loop in useEffect Dependency Array
 
-**Testing steps**:
-1. Page loads with "User interactions: 0"
-2. Click any "Activate" or "Deactivate" button → Counter stays "0" (should be 1)
-3. Click another toggle button → Counter still shows "0" (should be 2)
-4. Keep clicking different toggle buttons → Counter never changes from "0"
+**Location:** `src/services/hooks/useCart.js` (lines 20-24)
 
-## Testing Order Recommendation
+**What:** `useEffect` with incorrect dependency array causes infinite loop
 
-For candidates testing the site, they should discover bugs in roughly this order:
+**Expected:** Cart count updates correctly when items added/removed
 
-1. **Try basic functionality**: Click filter buttons → discover they don't work
-2. **Look at data**: Notice statistics don't add up mathematically  
-3. **Examine user details**: Notice all users have the same email address
-4. **Use toggle buttons**: Try to understand toggle buttons → realize labels are confusing
-5. **Test interactions**: Click multiple toggle buttons → notice counter never changes from 0
+**Actual:** Cart count grows exponentially (2 → 4 → 6 → 8...) due to compounding bug
 
-## Key Benefits of These Bugs
+**Root Cause:**
 
-✅ **Immediately visible** - no code inspection needed
-✅ **Functionally obvious** - users expect these things to work
-✅ **Range of severity** - from critical functionality to minor cosmetic
-✅ **Different bug types** - UI interaction, data accuracy, labeling, text
-✅ **Easy to test** - candidates can verify each bug in under 30 seconds
+```javascript
+useEffect(() => {
+  const quantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+  setCartCount(cartCount + quantity); // Wrong: compounds instead of replacing
+}, [cart, cartCount]); // cartCount in dependencies creates infinite loop
+```
 
-## Expected User Testing Flow
+**Fix:**
 
-A candidate testing this application should:
+1. Remove `cartCount` from dependency array: `[cart]`
+2. Change `cartCount + quantity` to just `quantity`
+3. Or use `useMemo` for cart count calculation
 
-1. **Load the page** → Notice interaction counter at "0"
-2. **Try to filter users** → Discover "All Users" and "Active" buttons broken
-3. **Check the math** → Notice statistics don't add up  
-4. **Examine user details** → Notice all users show the same email address
-5. **Test toggle buttons** → Realize button text is backwards + counter never updates from 0
+**Solution Code:**
 
-All bugs should be discoverable within **5 minutes of normal website usage** without looking at any code.
+```javascript
+// Option 1: Fix the useEffect
+useEffect(() => {
+  const quantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+  setCartCount(quantity); // ✅ Just set the quantity, don't add to existing count
+}, [cart]); // ✅ Remove cartCount from dependencies
+
+// Option 2: Use useMemo instead of state + useEffect
+const cartCount = useMemo(() => {
+  return cart.reduce((sum, item) => sum + item.quantity, 0);
+}, [cart]);
+```
+
+## Bug 3: State Mutation Instead of Replacement
+
+**Location:** `src/services/hooks/useCart.js` (lines 24-36)
+
+**What:** Direct mutation of state array instead of proper immutable updates
+
+**Expected:** Cart updates immediately when items are added
+
+**Actual:** Cart appears unchanged until another state update triggers re-render (stale UI)
+
+**Root Cause:**
+
+```javascript
+const addToCart = (product, quantity = 1) => {
+  const existingItem = cart.find((item) => item.id === product.id);
+  if (existingItem) {
+    existingItem.quantity += quantity; // ❌ Direct mutation
+    setCart(cart); // Same reference - no re-render!
+  } else {
+    cart.push({ ...product, quantity }); // ❌ Direct mutation
+    setCart(cart); // Same reference - no re-render!
+  }
+};
+```
+
+**Fix:**
+
+1. Use proper immutable updates: `setCart([...cart, item])`
+2. For existing items: `setCart(prevCart.map(item => item.id === productId ? {...item, quantity: item.quantity + quantity} : item))`
+
+**Solution Code:**
+
+```javascript
+// ✅ Proper immutable state update
+const addToCart = (product, quantity = 1) => {
+  setCart((prevCart) => {
+    const existingItem = prevCart.find((item) => item.id === product.id);
+    if (existingItem) {
+      // Update existing item immutably
+      return prevCart.map((item) =>
+        item.id === product.id
+          ? { ...item, quantity: item.quantity + quantity }
+          : item
+      );
+    } else {
+      // Add new item immutably
+      return [...prevCart, { ...product, quantity }];
+    }
+  });
+};
+```

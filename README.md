@@ -1,51 +1,50 @@
-# React Bug Challenge - User Management Dashboard
+# Online Grocery Store
 
-This is a Next.js application with intentional bugs for testing coding skills. The app contains a user management dashboard with filtering, statistics, and user status management.
+A React application built with Next.js featuring a clean, modern grocery shopping experience.
+
+## Features
+
+- 🛒 **Shopping Cart** - Add items with quantity controls
+- 📱 **Responsive Design** - Works on all devices
+- 🎨 **Modern UI** - Clean, professional interface
+- 🚀 **Fast Performance** - Built with Next.js
 
 ## Getting Started
 
-First, install dependencies and run the development server:
+1. Install dependencies:
 
 ```bash
 npm install
+```
+
+2. Run the development server:
+
+```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Open [http://localhost:3000](http://localhost:3000) in your browser
 
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
 
 ## Project Structure
 
 ```
 src/
-  app/
-    layout.js          # App layout
-    page.js           # Main page component
-  components/
-    FilterButtons.js   # 🐛 Filter buttons (bug #1)
-    Statistics.js      # 🐛 Statistics display (bug #2) 
-    UserCard.js       # 🐛 Individual user cards (bugs #3,#4)
-    UserList.js       # User list with filtering
-    Header.js         # Page header
-    LoadingSpinner.js # Loading component
-    ErrorMessage.js   # Error display
-  services/
-    apiService.js     # Mock API service
-  styles/
-    globals.css       # Global styles
+├── app/                 # Next.js app directory
+├── components/         # React components
+│   ├── layout/        # Layout components
+│   ├── products/      # Product-related components
+│   ├── ui/           # Reusable UI components
+│   └── ...           # Other components
+├── services/          # Business logic
+│   ├── api/         # API services
+│   ├── hooks/       # Custom React hooks
+│   └── utils/       # Utility functions
+└── styles/           # Global styles
 ```
-
-## Challenge Instructions
-
-1. **Test the website** - Use the app normally to discover the bugs
-2. **Fix the bugs** - Edit the code to resolve each issue
-3. **Verify fixes** - Run `npm run test:bugs` to confirm all bugs are resolved
-
-The goal is to achieve ✅ ALL BUGS FIXED status from the test script.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
