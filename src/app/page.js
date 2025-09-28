@@ -1,12 +1,10 @@
 // Online Grocery Store - Main Component
-// Demonstrates complex state management and component composition
 "use client";
 
 import React, { useEffect, useState } from "react";
 import Header from "../components/layout/Header/Header.js";
 import ProductList from "../components/products/ProductList/ProductList.js";
 import Cart from "../components/layout/Sidebar/Cart/Cart.js";
-import CheckoutForm from "../components/checkout/CheckoutForm/CheckoutForm.js";
 import LoadingSpinner from "../components/LoadingSpinner.js";
 import ErrorMessage from "../components/ErrorMessage.js";
 import { useProducts } from "../services/hooks/useProducts.js";
@@ -73,7 +71,6 @@ export default function GroceryStore() {
             cart={cart}
             onRemoveItem={removeFromCart}
             onUpdateQuantity={updateQuantity}
-            onCheckout={() => {}}
             summary={getCartSummary()}
             promoCode={promoCode}
             setPromoCode={setPromoCode}
@@ -82,8 +79,6 @@ export default function GroceryStore() {
           />
         </div>
       </div>
-
-      {/* Checkout form would go here */}
     </div>
   );
 }

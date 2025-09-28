@@ -1,7 +1,5 @@
-// Cart summary with totals and checkout button
-import Button from "../../../ui/Button.js";
-
-export default function CartSummary({ summary, onCheckout, hasItems }) {
+// Cart summary with totals
+export default function CartSummary({ summary, hasItems }) {
   return (
     <>
       <div className="cart-totals">
@@ -27,14 +25,6 @@ export default function CartSummary({ summary, onCheckout, hasItems }) {
           <span>${summary.total}</span>
         </div>
       </div>
-
-      <Button
-        onClick={onCheckout}
-        disabled={!hasItems}
-        className="checkout-btn"
-      >
-        Proceed to Checkout
-      </Button>
     </>
   );
 }

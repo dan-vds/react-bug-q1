@@ -7,7 +7,6 @@ export default function Cart({
   cart,
   onRemoveItem,
   onUpdateQuantity,
-  onCheckout,
   summary,
   promoCode,
   setPromoCode,
@@ -45,7 +44,6 @@ export default function Cart({
 
           <CartSummary
             summary={summary}
-            onCheckout={onCheckout}
             hasItems={cart.length > 0}
           />
         </>
